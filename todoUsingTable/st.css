@@ -1,0 +1,18 @@
+
+#add_button{
+    background: black;
+    color: white;
+    height: 30px;
+    width: 60px;
+    border-radius: 20px;
+    font-size: large;
+}
+#item{
+    width: 200px;
+    height: 30px;
+    background: black;
+    color: white;
+    border-radius: 20px;
+    padding-left: 16px;
+    
+}
