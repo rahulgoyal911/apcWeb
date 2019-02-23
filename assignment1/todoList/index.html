@@ -1,23 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <style>
-        #add_button{
-            background: black;
-            color: white;
-            height: 30px;
-            width: 60px;
-            font-size: large;
-        }
-        #item{
-            width: 200px;
-            height: 30px;
-            background: black;
-            color: white;
-            border-radius: 20px;
-            padding-left: 16px;
-            
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="st.css">
+    
     <body bgColor="green">
             <input id="item" placeholder="Enter your value">
             <button id="add_button">add</button>
@@ -25,71 +9,5 @@
             </ol>
     </body>
 
-    <script>
-            var btna = document.getElementById("add_button");
-            var n1 = document.getElementById("item");
-            var parent = document.getElementById("parent");   
-            btna.onclick = function()
-            {
-                console.log(event);
-                var code = event.keyCode;
-                            if (n1.value=="")
-                        alert("Enter value");
-                        else
-                        {
-                            
-                        var node = document.createElement("li");
-                        var node1 = document.createElement("button"); 
-                        node.setAttribute("style","background:green;color:black;font-weight:bold;border-radius: 20px;width:100px;padding-left: 16px;width: 200px;height: 23px;margin:10px;"); 
-                        node1.setAttribute("style","margin-left: 30px;")
-                        node.innerHTML=n1.value;
-                        
-                        var bn = document.getElementById("li"); 
-                        node.appendChild(node1);
-                        node1.innerHTML="Delete";
-                        parent.appendChild(node);
-                        node1.onclick = function(){
-                            parent.removeChild(node);
-                        }
-                        n1.value="";
-                        
-                        bn.appendChild(node1);
-                        
-                        n1.value="";
-                }
-                }
-                
-            n1.onkeyup = function(event) {
-                console.log(event);
-                var code = event.keyCode;
-                if(code==13){
-                            if (n1.value=="")
-                        alert("Enter value");
-                        else
-                        {
-                            
-                        var node = document.createElement("li");
-                        var node1 = document.createElement("button"); 
-                        node.setAttribute("style","background:green;color:black;font-weight:bold;border-radius: 20px;width:100px;padding-left: 16px;width: 200px;height: 23px;margin:10px;"); 
-                        node1.setAttribute("style","margin-left: 30px;")
-                        node.innerHTML=n1.value;
-                        
-                        var bn = document.getElementById("li"); 
-                        node.appendChild(node1);
-                        node1.innerHTML="Delete";
-                        parent.appendChild(node);
-                        node1.onclick = function(){
-                            parent.removeChild(node);
-                        }
-                        n1.value="";
-                        
-                        bn.appendChild(node1);
-                        
-                        n1.value="";
-                }
-                }
-            }
-
-           
-    </script>
+    <script src="todo.js"></script>
 </html>
