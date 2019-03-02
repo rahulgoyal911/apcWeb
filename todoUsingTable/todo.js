@@ -68,7 +68,7 @@ input.onkeyup = function(event) {
                 
 //                 parent.avar input = document.getElementById("item");
 
-var tbody = document.getElementById("parent");ppendChild(node);
+//var tbody = document.getElementById("parent");ppendChild(node);
 //                 node.appendChild(count);
 //                 node.appendChild(data);
 //                 node.appendChild(node1);
