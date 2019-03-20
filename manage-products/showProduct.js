@@ -3,7 +3,6 @@ var productId = 1;
 var cart = [];
 var cartId = 1
 
-
 function retrive() {
 	var d = localStorage.getItem("Content");
 	if(d != null)
@@ -17,7 +16,9 @@ function retrive() {
 		cartId=cart.length;
 	}
 }
+
 var divListProducts = document.getElementById("divListProducts");
+
 function addProducttoDOM(objProduct) {  	
 	//create a new DIV for this product 
 	var tr = document.createElement("tr");
@@ -66,6 +67,7 @@ function addProducttoDOM(objProduct) {
 	divListProducts.appendChild(tr);
 	productId++;
 }
+
 function addToCart(selectProductIndex) {
 	var i = document.getElementById("Product"+selectProductIndex).innerHTML;
 	var objProduct = new Object();
@@ -83,6 +85,7 @@ function addToCart(selectProductIndex) {
 	cartId++;
 	update(i,qty);
 }
+
 function update(i,qty) {
 	var new1 = products[i-1];
 	var a = new1.Quantity-qty;	
