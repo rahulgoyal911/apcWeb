@@ -1,26 +1,19 @@
 var products = [];
 var productId = 1;
-
-function retrive() {
-	var d = localStorage.getItem("Content");
-	if(d != null)
-	{
-		products = JSON.parse(d);
-		for(var i=0;i<products.length;i++)
-		{
-			addProducttoDOM(products[i]);
-		}
-		productId=products.length;
-	}
-}
-
-
 var divAddProduct = document.getElementById("divAddProduct");
 var divListProducts = document.getElementById("divListProducts");
 var aAddProduct = document.getElementById("aAddProduct");
+var clearBtn = document.getElementById("clear");
 var data;
 
 
+if(getFromLocalStorage()) {
+
+	products = getFromLocalStorage();
+	for(var i = 0;i<products.length;i++) {
+		addProducttoDOM(products[i]);
+	}
+}
  
 aAddProduct.addEventListener("click", function(event) {  
     createNewProductPanel(); 
@@ -57,7 +50,7 @@ function addProducttoDOM(objProduct) {
 	//create a anchor for product name
 	var aProductName = document.createElement("a");
 	aProductName.setAttribute("href","#");
-	aProductName.innerHTML = "Get details of the Project here: " +  objProduct.Name;
+	aProductName.innerHTML = objProduct.Name;
 	divProduct.appendChild(aProductName);
 	
 	insertBlankLine(divProduct);
@@ -77,11 +70,10 @@ function addProducttoDOM(objProduct) {
 
 	insertBlankLine(divProduct);
 
-	//to edit any detail of this product
-	var aEditProduct = document.createElement("a");
-	aEditProduct.setAttribute("href", "#");
-	aEditProduct.innerHTML = "Edit Product";
-	divProduct.appendChild(aEditProduct);
+	var aEdit = document.createElement("a");
+	aEdit.setAttribute("href", "#");
+	aEdit.innerHTML = "Edit Product";
+	divProduct.appendChild(aEdit);
 
 	aDelete.addEventListener("click",function(event) {
 	   // To access the parent node of the element which is clicked
@@ -98,7 +90,7 @@ function addProducttoDOM(objProduct) {
 		}
 	);
 
-	aEditProduct.addEventListener("click",function(event) {
+	aEdit.addEventListener("click",function(event) {
 		var targetParent = event.target.parentNode;
 		var selectedProductIndex = getProductIndex(parseInt(targetParent.id));
 		editProduct(selectedProductIndex);
@@ -115,8 +107,9 @@ function addProducttoDOM(objProduct) {
     insertBlankLine(divProduct);
 	insertBlankLine(divProduct);
 
-	PutIntoLocalStorage();
 	unHideAddNewProductLink();
+	// localStorage.removeItem("Data");
+	putInLocalStorage();
 }
 
 // Given a product ID, returns the index to the product data in products. 
@@ -137,8 +130,9 @@ function getProductDetails(selectedProductIndex) {
 function removeFromProductsArray(selectedProductIndex) {
 	products.splice(selectedProductIndex,1);
 	console.log(products);
+	localStorage.removeItem("Data");
 	data = JSON.stringify(products);
-	localStorage.setItem("Content",data);
+	localStorage.setItem("Data", data);
 }
 
 function deleteNewProductPanel() {
@@ -164,7 +158,7 @@ function insertBlankLine(targetElement) {
 function editProducttoDOM(objProduct) {
 	var divProduct = document.getElementById(objProduct.Id);
 	var childNodes = divProduct.childNodes;
-	childNodes[0].innerHTML = "Get details of the Project here: " + objProduct.Name;
+	childNodes[0].innerHTML = objProduct.Name;
 	childNodes[2].innerHTML = objProduct.Desc;
 	unHideAddNewProductLink();
 }
@@ -180,9 +174,8 @@ function editProductArray(selectedProductIndex) {
 	products[selectedProductIndex] = objProduct;
 	console.log(products[selectedProductIndex]);
 	editProducttoDOM(objProduct);
+	editLocalStorage();
     deleteNewProductPanel();
-    data = JSON.stringify(products);
-	localStorage.setItem("Content",data);
 }
 
 function createNewProductPanel(selectedProductIndex) {
@@ -251,65 +244,6 @@ function createNewProductPanel(selectedProductIndex) {
 		}
 	);	
 
-}
-
-function editProductPanel(selectedProductIndex) {
-	hideAddNewProductLink();
-
-	/* Label - Product Quantity */ 
-	var lblAddProduct = document.createElement("label");
-	lblAddProduct.innerHTML = "Add New Product";
-	lblAddProduct.setAttribute("style","font-weight:bold");
-    divAddProduct.appendChild(lblAddProduct);
-
-	insertBlankLine(divAddProduct);
-	insertBlankLine(divAddProduct);
-	
-	/* TextBox - Product Name */ 
-	var txtProductName = document.createElement("input");
-	txtProductName.setAttribute("type","text");
-	txtProductName.setAttribute("id","txtProductName");
-    txtProductName.setAttribute("placeholder", "Enter the product name");	
-	txtProductName.setAttribute("style","width:250px");
-	divAddProduct.appendChild(txtProductName);	
-	
-	insertBlankLine(divAddProduct);
-	insertBlankLine(divAddProduct);
-	
-	/* TextBox - Product Description */ 
-	var txtProductDesc = document.createElement("textarea");
-	txtProductDesc.setAttribute("id","txtProductDesc");
-    txtProductDesc.setAttribute("placeholder", "Enter the product description");	
-	txtProductDesc.setAttribute("style","width:250px ; height:50px");
-	divAddProduct.appendChild(txtProductDesc);	
-	
-	insertBlankLine(divAddProduct);
-	insertBlankLine(divAddProduct);
-
-	/* TextBox - Product Price */ 
-	var txtProductPrice = document.createElement("input");
-	txtProductPrice.setAttribute("type","text");
-	txtProductPrice.setAttribute("id","txtProductPrice");
-    txtProductPrice.setAttribute("placeholder", "Enter the product price");	
-	txtProductPrice.setAttribute("style","width:250px");
-	divAddProduct.appendChild(txtProductPrice);	
-	
-	insertBlankLine(divAddProduct);
-	insertBlankLine(divAddProduct);
-	
-	/* TextBox - Product Quantity */ 
-	var txtProductQuantity = document.createElement("input");
-	txtProductQuantity.setAttribute("type","text");
-	txtProductQuantity.setAttribute("id","txtProductQuantity");
-    txtProductQuantity.setAttribute("placeholder", "Enter the product quantity");	
-	txtProductQuantity.setAttribute("style","width:250px");
-	divAddProduct.appendChild(txtProductQuantity);	
-	
-	insertBlankLine(divAddProduct);
-	insertBlankLine(divAddProduct);
-
-	/* Button - Edit Product */ 
-
 	var btnEditButton = document.createElement("button");
 	btnEditButton.setAttribute("id","btnEditButton");
 	btnEditButton.innerHTML = "Edit Product";
@@ -320,12 +254,26 @@ function editProductPanel(selectedProductIndex) {
 	});
 }
 
-
 function editProduct(selectedProductIndex) {
-	editProductPanel(selectedProductIndex);
+	createNewProductPanel(selectedProductIndex);
+}
+function putInLocalStorage() {
+	data =  JSON.stringify(products);
+	localStorage.setItem("Data",data);
+}
+function getFromLocalStorage() {
+	data =  localStorage.getItem("Data");
+	return JSON.parse(data);
+}
+function editLocalStorage() {
+	data = JSON.stringify(products);
+	localStorage.setItem("Data", data);
 }
 
-function PutIntoLocalStorage() {
-	data = JSON.stringify(products);
-	localStorage.setItem("Content",data);
-}
+clearBtn.addEventListener("click", function() {
+
+	localStorage.removeItem("Data");
+	products = [];
+	divListProducts.innerHTML = "";
+	productId = 1;
+});
