@@ -6,6 +6,7 @@ var time;
 var flag=0;
 var timegap;
 var breakt;
+var state = 0
 userInput.addEventListener("keyup",function(event){
   if(event.keyCode==13) {
     time = userInput.value;
@@ -18,6 +19,8 @@ timer.addEventListener("dblclick",function(event) {
   timer.setAttribute("value",0);
 });
 start.addEventListener("click",function(event) {
+    if(state!=1){
+        state = 1;
   timegap = setInterval(function() {
     time--;
     timer.setAttribute("value",time);
@@ -28,9 +31,11 @@ start.addEventListener("click",function(event) {
       flag=0;
     }
   },1000);
+    }
 });
 
 pause.addEventListener("click",function(event){
+    state = 0
   breakt = time;
   clearInterval(timegap);
 });
